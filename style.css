@@ -517,9 +517,7 @@ details{
   scale: 0.95;
   box-shadow: 0px 0px 0px --black;
 }
-.daily-Plans{
-  display: block;
-}
+
 .daily-Plans h1{
   font-size: 50px;
   font-weight: 600;
