@@ -23,7 +23,7 @@ function todoList() {
   if (localStorage.getItem("tasks")) {
     tasks = JSON.parse(localStorage.getItem("tasks"));
   } else {
-    console.log("there is data in local storage");
+    console.log("No data found in localStorage");
   }
   function renderTask() {
     const allTask = document.querySelector(".all-task");
@@ -196,91 +196,150 @@ function pomodoroTimer() {
 
 pomodoroTimer();
 
-let data = null;
-const apiKey = "e8def0fe6af24644b5f154551261606";
-let city = "Azamgarh";
+function heroWeather() {
+  let data = null;
+  const apiKey = "e8def0fe6af24644b5f154551261606";
+  let city = "Azamgarh";
 
-let header1Time = document.querySelector(".header1 h1");
-let header1Date = document.querySelector(".header1 h2");
-let header1Location = document.querySelector(".header1 h2");
-let temp = document.querySelector(".header2 .temp");
-let precipitate = document.querySelector(".header2 .precipitation");
-let humidity = document.querySelector(".header2 .humidity");
-let wind = document.querySelector(".header2 .wind");
-let condition = document.querySelector(".header2 .condition");
-let Area = document.querySelector(".header1 .location");
+  let header1Time = document.querySelector(".header1 h1");
+  let header1Date = document.querySelector(".header1 h2");
+  let header1Location = document.querySelector(".header1 h2");
+  let temp = document.querySelector(".header2 .temp");
+  let precipitate = document.querySelector(".header2 .precipitation");
+  let humidity = document.querySelector(".header2 .humidity");
+  let wind = document.querySelector(".header2 .wind");
+  let condition = document.querySelector(".header2 .condition");
+  let Area = document.querySelector(".header1 .location");
 
-async function getWeather() {
-  let responce = await fetch(
-    ` http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`,
-  );
+  async function getWeather() {
+    let responce = await fetch(
+      ` http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`,
+    );
 
-  data = await responce.json();
+    data = await responce.json();
 
-  console.log(data);
+    console.log(data);
 
-   temp.innerHTML=` ${data.current.temp_c}°C`;
-   humidity.innerHTML=`Humidity : ${data.current.humidity}%`;
-   wind.innerHTML=`Wind Speed (km/h) : ${data.current.wind_kph} km/h`;
-   condition.innerHTML=`  ${data.current.condition.text}`;
-   precipitate.innerHTML=`Precipitation: ${data.current.heatindex_f}`;
-   Area.innerHTML=` 📍 ${data.location.name}: ${data.location.region}(${data.location.country})`
-
-}
-getWeather();
-
-function dateTime() {
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  let date = new Date();
-  let dayOfWeek=days[date.getDay()];
-  let hours=date.getHours();
-  
-  
-  
-  let minutes=date.getMinutes();
-  var currentdate=date.getDate();
-  var month= months[date.getMonth()];
-  var year=date.getFullYear();
-
-  header1Date=`${currentdate} ${month} , ${year}`
-  
-
-  
-  if(hours>12){
-
-     header1Time.innerHTML = `${dayOfWeek} <br> ${String(hours-12).padStart("2","0")}:${String(minutes).padStart("2", "0")} PM`;
+    temp.innerHTML = ` ${data.current.temp_c}°C`;
+    humidity.innerHTML = `Humidity : ${data.current.humidity}%`;
+    wind.innerHTML = `Wind Speed (km/h) : ${data.current.wind_kph} km/h`;
+    condition.innerHTML = `  ${data.current.condition.text}`;
+    precipitate.innerHTML = `Precipitation: ${data.current.heatindex_f}`;
+    Area.innerHTML = ` 📍 ${data.location.name}: ${data.location.region}(${data.location.country})`;
   }
-  else{
-     header1Time.innerHTML = `${dayOfWeek} , ${hours}:${String(minutes).padStart("2", "0")} AM`;
+  getWeather();
+
+  function dateTime() {
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    let date = new Date();
+    let dayOfWeek = days[date.getDay()];
+    let hours = date.getHours();
+
+    let minutes = date.getMinutes();
+    var currentdate = date.getDate();
+    var month = months[date.getMonth()];
+    var year = date.getFullYear();
+
+    header1Date = `${currentdate} ${month} , ${year}`;
+
+    if (hours > 12) {
+      header1Time.innerHTML = `${dayOfWeek} <br> ${String(hours - 12).padStart("2", "0")}:${String(minutes).padStart("2", "0")} PM`;
+    } else {
+      header1Time.innerHTML = `${dayOfWeek} , ${hours}:${String(minutes).padStart("2", "0")} AM`;
+    }
   }
-  
 
-  
+  setInterval(function () {
+    dateTime();
+  }, 1000);
 }
+heroWeather();
 
-setInterval(function(){
-  dateTime();
-},1000)
+function dailyPlans() {
+  let dailyTasks = [];
+
+  if (localStorage.getItem("dailyTasks")) {
+    dailyTasks = JSON.parse(localStorage.getItem("dailyTasks"));
+  } else {
+    console.log("No data found in localStorage");
+  }
+  let stickytasks = document.querySelector(".sticky-notes");
+  function gettasks() {
+    let allTsks = "";
+    dailyTasks.forEach(function (e) {
+      let posy = Math.floor(Math.random() * 80);
+      let posx = Math.floor(Math.random() * 70);
+      let rotation = Math.floor(Math.random() * 31) - 15;
+      let red = Math.floor(Math.random() * 256);
+      let green = Math.floor(Math.random() * 256);
+      let blue = Math.floor(Math.random() * 256);
+
+      allTsks += `<div  style="
+ top:${posy}%;
+ left:${posx}%;
+ rotate:${rotation}deg;
+ background:rgb(${red},${green},${blue});
+ position:absolute;
+ ">
+                        <h2>${e.task}</h2>
+                        <p>${e.details}</p>
+                    </div>`;
+    });
+    stickytasks.innerHTML = allTsks;
+    localStorage.setItem("dailyTasks", JSON.stringify(dailyTasks));
+  }
+  gettasks();
+
+  function addTask() {
+    let form = document.querySelector(".add-tasks form");
+    let taskInput = document.querySelector(".add-tasks form .inp-task");
+    let taskDets = document.querySelector(".add-tasks form .task-details");
+    let stick = document.querySelector(".sticky-notes div ");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      dailyTasks.push({ task: taskInput.value, details: taskDets.value });
+      gettasks();
+
+      stick.style.top = posy + "%";
+      stick.style.left = posx + "%";
+      stick.style.rotate = rotation + "deg";
+      stick.style.backgroundColor = `rgb(${red},${green},${blue})`;
+
+      taskInput.value = "";
+      taskDets.value = "";
+    });
+  }
+  addTask();
+
+  let clearTaskBtn = document.querySelector(".dailyTask-Container .clear");
+  clearTaskBtn.addEventListener("click", function () {
+    localStorage.removeItem("dailyTasks");
+    location.reload();
+  });
+  gettasks();
+}
