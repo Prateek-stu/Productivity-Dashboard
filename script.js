@@ -199,7 +199,7 @@ pomodoroTimer();
 function heroWeather() {
   let data = null;
   const apiKey = "e8def0fe6af24644b5f154551261606";
-  let city = "Azamgarh";
+  let city = "Mau";
 
   let header1Time = document.querySelector(".header1 h1");
   let header1Date = document.querySelector(".header1 h2");
