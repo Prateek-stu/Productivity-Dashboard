@@ -137,7 +137,7 @@ header .header2 h3{
 }
 
 .container .elemContain h2{
-  color: var(--black);
+  color: var(--white);
   font-family: "regular";
   font-weight: 700;
   text-align: center;

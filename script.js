@@ -314,12 +314,15 @@ function dailyPlans() {
   gettasks();
 
   function addTask() {
-    let form = document.querySelector(".add-tasks form");
+    let frm = document.querySelector(".daily-Plans .dailyTask-Container form")
     let taskInput = document.querySelector(".add-tasks form .inp-task");
     let taskDets = document.querySelector(".add-tasks form .task-details");
     let stick = document.querySelector(".sticky-notes div ");
-
-    form.addEventListener("submit", function (e) {
+    console.log(frm);
+    
+    frm.addEventListener("submit", function (e) {
+      console.log("helllloooo");
+      
       e.preventDefault();
 
       dailyTasks.push({ task: taskInput.value, details: taskDets.value });
