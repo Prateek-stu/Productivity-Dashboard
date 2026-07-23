@@ -279,70 +279,95 @@ function heroWeather() {
 heroWeather();
 
 function dailyPlans() {
-  let dailyTasks = [];
 
-  if (localStorage.getItem("dailyTasks")) {
-    dailyTasks = JSON.parse(localStorage.getItem("dailyTasks"));
-  } else {
-    console.log("No data found in localStorage");
-  }
-  let stickytasks = document.querySelector(".sticky-notes");
-  function gettasks() {
-    let allTsks = "";
-    dailyTasks.forEach(function (e) {
-      let posy = Math.floor(Math.random() * 80);
-      let posx = Math.floor(Math.random() * 70);
-      let rotation = Math.floor(Math.random() * 31) - 15;
-      let red = Math.floor(Math.random() * 256);
-      let green = Math.floor(Math.random() * 256);
-      let blue = Math.floor(Math.random() * 256);
+    let dailyTasks = JSON.parse(localStorage.getItem("dailyTasks")) || [];
 
-      allTsks += `<div  style="
- top:${posy}%;
- left:${posx}%;
- rotate:${rotation}deg;
- background:rgb(${red},${green},${blue});
- position:absolute;
- ">
-                        <h2>${e.task}</h2>
-                        <p>${e.details}</p>
-                    </div>`;
+    let stickytasks = document.querySelector(".sticky-notes");
+
+    function gettasks() {
+
+        let allTsks = "";
+
+        dailyTasks.forEach(function (e) {
+
+            allTsks += `
+            <div
+            style="
+                position:absolute;
+                top:${e.top}%;
+                left:${e.left}%;
+                rotate:${e.rotate}deg;
+                background:${e.color};
+            ">
+
+                <h2>${e.task}</h2>
+                <p>${e.details}</p>
+
+            </div>`;
+
+        });
+
+        stickytasks.innerHTML = allTsks;
+    }
+
+    gettasks();
+
+    function addDailyTask() {
+
+        let frm = document.querySelector(".dailyTask-Container .add-tasks form");
+        let taskInput = document.querySelector(".add-tasks form .inp-task");
+        let taskDets = document.querySelector(".add-tasks form .task-details");
+
+        frm.addEventListener("submit", function (e) {
+            console.log("submitted");
+            
+            e.preventDefault();
+
+            let posy = Math.floor(Math.random() * 80);
+            let posx = Math.floor(Math.random() * 70);
+            let rotation = Math.floor(Math.random() * 31) - 15;
+            let red = Math.floor(Math.random() * 256);
+            let green = Math.floor(Math.random() * 256);
+            let blue = Math.floor(Math.random() * 256);
+
+            dailyTasks.push({
+
+                task: taskInput.value,
+                details: taskDets.value,
+
+                top: posy,
+                left: posx,
+                rotate: rotation,
+                color: `rgb(${red},${green},${blue})`
+
+            });
+
+            localStorage.setItem(
+                "dailyTasks",
+                JSON.stringify(dailyTasks)
+            );
+
+            gettasks();
+
+            taskInput.value = "";
+            taskDets.value = "";
+
+        });
+
+    }
+
+    addDailyTask();
+
+    let clearTaskBtn = document.querySelector(".dailyTask-Container .clear");
+
+    clearTaskBtn.addEventListener("click", function () {
+
+        dailyTasks = [];
+
+        localStorage.removeItem("dailyTasks");
+
+        gettasks();
+
     });
-    stickytasks.innerHTML = allTsks;
-    localStorage.setItem("dailyTasks", JSON.stringify(dailyTasks));
-  }
-  gettasks();
 
-  function addTask() {
-    let frm = document.querySelector(".daily-Plans .dailyTask-Container form")
-    let taskInput = document.querySelector(".add-tasks form .inp-task");
-    let taskDets = document.querySelector(".add-tasks form .task-details");
-    let stick = document.querySelector(".sticky-notes div ");
-    console.log(frm);
-    
-    frm.addEventListener("submit", function (e) {
-      console.log("helllloooo");
-      
-      e.preventDefault();
-
-      dailyTasks.push({ task: taskInput.value, details: taskDets.value });
-      gettasks();
-
-      stick.style.top = posy + "%";
-      stick.style.left = posx + "%";
-      stick.style.rotate = rotation + "deg";
-      stick.style.backgroundColor = `rgb(${red},${green},${blue})`;
-
-      taskInput.value = "";
-      taskDets.value = "";
-    });
-  }
-  addTask();
-
-  let clearTaskBtn = document.querySelector(".dailyTask-Container .clear");
-  clearTaskBtn.addEventListener("click", function () {
-    localStorage.removeItem("dailyTasks");
-    location.reload();
-  });
-  gettasks();
 }
